@@ -1,0 +1,473 @@
+/* General styles */
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden; /* Prevent scrollbars */
+    position: relative;
+    cursor: pointer;
+}
+
+/* Background image */
+#background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 120%; /* Increased for more zoom */
+    height: 120%;
+    background-image: url('https://wallpaperaccess.com/full/5927911.gif');
+    background-size: cover;
+    background-position: center;
+    will-change: transform;
+    transform: translate(-10%, -10%); /* Adjusted to center the oversized background */
+    z-index: -1; /* Place it behind other content */
+}
+
+/* Button style */
+.button {
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    border-radius: 8px;
+    margin: 7px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+}
+
+.button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Mute button style */
+.mute-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border: none;
+    border-radius: 9px;
+    padding: 4px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    z-index: 100;
+}
+
+.mute-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Hide element */
+.hidden {
+    display: none;
+}
+
+/* 3D glass button style */
+.new-button {
+    width: 160px;
+    height: 100px;
+    border-radius: 20px;
+    border: 4px solid #333;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Specific styles for the buttons with background images */
+#openWindow3 {
+    background-image: url('https://media4.giphy.com/media/3ov9jQWd5qhiUSPDri/giphy.gif');
+}
+
+#openWindow4 {
+    background-image: url('https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmZwemkwOGF1MGRsejlsbGpmN3duZWdycTQzcGc0OXBvZmlxNzNxMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pbswvOmotW0SSBh3xl/giphy.webp');
+}
+
+#openWindow5 {
+    background-image: url('https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDJreGx3dW9iZWRzZjRyY2x0NHhlbGxwcWF0OWR6enF3ZDl2a2Q3YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/82IOoj2wwMw7AlO4fR/giphy.webp');
+}
+
+#openWindow6 {
+    background-image: url('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeGh1anQzemQ0OGp2dWNndzFxd2F3dmRpbHRvOWJxM2w1c2RtM3BzdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jhUmzyvOheztZX4Yq5/giphy.webp');
+}
+
+#openWindow7 {
+    background-image: url('https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjMzdGs3M3pnYjlpb3RneTFnM3ozY2g2ZjZheDBpeHh0Z21uZG5oZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0JM83bF1jbRsTnNu/giphy.webp');
+}
+
+#openWindow8 {
+    background-image: url('https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXdvNnhmY3N5czk3NmUwazNnZXlwY2Nja2t2dzhtenZoc2hxemVncyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3ohzh0IfrsSv4ZBNhS/giphy.webp');
+}
+
+#openWindow9 {
+    background-image: url('https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXdvNnhmY3N5czk3NmUwazNnZXlwY2Nja2t2dzhtenZoc2hxemVncyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3ohzh0IfrsSv4ZBNhS/giphy.webp');
+}
+
+#openWindow10 {
+    background-image: url('https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXdvNnhmY3N5czk3NmUwazNnZXlwY2Nja2t2dzhtenZoc2hxemVncyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3ohzh0IfrsSv4ZBNhS/giphy.webp');
+}
+
+#openWindow11 {
+    background-image: url('https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXdvNnhmY3N5czk3NmUwazNnZXlwY2Nja2t2dzhtenZoc2hxemVncyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3ohzh0IfrsSv4ZBNhS/giphy.webp');
+}
+
+/* Glossy glass effect */
+.new-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(transparent 60%, rgba(255, 255, 255, 0.1));
+    border-radius: 20px;
+    pointer-events: none;
+}
+
+/* Reflection effect at the top */
+.new-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80%;
+    height: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    pointer-events: none;
+    box-shadow: inset 0 4px 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Add hover effect to the new button */
+.new-button:hover {
+    box-shadow: 0px 40px 40px rgba(0, 0, 0, 0.6);
+    transform: translateY(-4px);
+}
+
+/* Overlay styling for modals */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Specific styling for Window 4 to have a black background */
+#window4 {
+    background-color: black;
+}
+
+/* Game overlay styling */
+.game-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 11;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.game-overlay.show {
+    display: flex;
+    opacity: 1;
+}
+
+/* Close button styling */
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: transparent;
+    border: none;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s;
+    z-index: 100;
+}
+
+.close-button:hover {
+    transform: scale(1.2);
+}
+
+/* Game styles */
+.bubble {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(145deg, #a450f7, #8000ff);
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    cursor: grab;
+}
+
+/* Respawn button styling */
+.respawn-button {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #8000ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.respawn-button:hover {
+    background-color: #a450f7;
+}
+
+/* Grid layout for 3x3 buttons */
+.button-container {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-column-gap: 80px;
+    grid-row-gap: 35px;
+}
+
+#window3 {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
+/* Style for the canvas in Window 5 */
+#window5 {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
+#window6 {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
+#window7 {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 15px;
+    gap: 10px;
+    background-color: #1e1e1e;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.controls label {
+    margin-right: 5px;
+    color: #e0e0e0;
+    font-size: 16px;
+}
+
+.controls input[type="color"],
+.controls input[type="range"],
+.controls button {
+    margin-right: 20px;
+    padding: 5px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.controls input[type="color"] {
+    padding: 0;
+    width: 40px;
+    height: 40px;
+}
+
+.controls input[type="range"] {
+    width: 150px;
+}
+
+.controls button {
+    background-color: #3a3a3a;
+}
+
+.controls button:hover {
+    background-color: #505050;
+}
+
+#paintCanvas {
+    border: 2px solid #ffffff;
+    background-color: #1e1e1e;
+    cursor: crosshair;
+    touch-action: none;
+    width: 80vw;
+    height: 60vh;
+    border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+    #paintCanvas {
+        width: 100%;
+        height: auto;
+    }
+
+    .controls {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .controls input[type="range"] {
+        width: 100%;
+    }
+
+    .controls button {
+        width: 100%;
+        margin-right: 0;
+    }
+}
+
+/* Ensure body overflow is hidden when modals are open */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* GIF fly-around styling */
+.gif-fly {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    z-index: 20;
+    display: none;
+}
+
+/* CSS Code for Boxfield */
+.container {
+    width: 50%;
+    height: 50%;
+    background: #111;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 24px);
+}
+
+.box {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    background: #111;
+    border: 1.5px solid rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #1d1d1d;
+    transition: 2s ease-in-out;
+}
+
+.box:hover::before {
+    transition: 0s ease-in-out;
+    background: #fff;
+}
+
+/* button window 7 */
+.circle-button {
+    width: 150px;
+    height: 150px;
+    border: none;
+    border-radius: 50%;
+    background-image: url('https://toppng.com/public/uploads/preview/twitter-x-icon-logo-116902890413xbfexhf8l.webp');
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    margin-left: 60px; /* Adjust this value to move the button further right */
+}
+
+
+.circle-button:hover {
+    transform: scale(1.1);
+}
+
+h1 {
+    font-size: 4.5em;
+    background: linear-gradient(to right, purple, blue, pink);
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 50px;
+}
+
+#window7 {
+    background-image: url('https://i.gifer.com/origin/e4/e43e1b221fd960003dc27d2f2f1b8ce1.gif');
+    background-size: cover;
+    background-position: center;
+    color: #e0e0e0;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    position: relative;
+}
+
+#window7::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(12px);
+    background: rgba(0, 0, 0, 0.3); /* Optional: darkens the background for better readability */
+    z-index: -1; /* Ensures the blur effect is behind the content */
+}

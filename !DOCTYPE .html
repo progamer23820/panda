@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Zoomed Background with Smooth Movement</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <audio id="backgroundMusic" autoplay loop style="display: none;">
+        <source src="https://ia800904.us.archive.org/31/items/wiichannelsoundtracks/Wii Channel Soundtracks/Check Mii Out Channel Soundtrack/Mii Contest.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Mute Button -->
+    <button class="mute-button" id="muteButton">Mute</button>
+
+    <!-- Background layer -->
+    <div id="background"></div>
+
+    <!-- Window 1: Main background with "O" button -->
+    <button class="button" id="openWindow2">﹏𓊝﹏</button>
+
+    <!-- Flying GIF -->
+    <img src="https://media.tenor.com/IOGej5ymBP0AAAAi/mii-wii.gif" id="flyingGif" class="gif-fly">
+
+    <!-- Window 2: Modal with 9 3D buttons -->
+    <div class="overlay" id="window2">
+        <button class="close-button" id="closeWindow2">✖</button>
+        <div class="button-container">
+            <!-- 3D buttons for opening other windows -->
+            <button class="new-button" id="openWindow3"></button>
+            <button class="new-button" id="openWindow4"></button>
+            <button class="new-button" id="openWindow5"></button>
+            <button class="new-button" id="openWindow6"></button>
+            <button class="new-button" id="openWindow7"></button>
+            <button class="new-button" id="openWindow8">8th Window</button>
+            <button class="new-button" id="openWindow9">9th Window</button>
+            <button class="new-button" id="openWindow10">10th Window</button>
+            <button class="new-button" id="openWindow11">11th Window</button>
+        </div>
+    </div>
+
+    <!-- Window 3: Modal with bubble game -->
+    <div class="game-overlay" id="window3">
+        <div class="game-container">
+            <button class="close-button" id="closeWindow3">✖</button>
+            <button class="respawn-button" id="respawnButton">Respawn Bubble</button>
+            <div class="bubble"></div>
+        </div>
+    </div>
+
+    <!-- Window 4: Modal with black background and bubble animation -->
+    <div class="overlay" id="window4">
+        <button class="close-button" id="closeWindow4">✖</button>
+        <canvas id="bubbleCanvas"></canvas>
+    </div>
+
+    <!-- Window 5: Paint app window -->
+    <div class="overlay" id="window5">
+        <button class="close-button" id="closeWindow5">✖</button>
+        <div class="controls">
+            <label for="colorPicker">Color:</label>
+            <input type="color" id="colorPicker" value="#ffffff">
+            <label for="brushSize">Brush Size:</label>
+            <input type="range" id="brushSize" min="1" max="50" value="5">
+            <button id="clearBtn">Clear Canvas</button>
+            <button id="saveBtn">Save Image</button>
+        </div>
+        <canvas id="paintCanvas"></canvas>
+    </div>
+
+    <!-- Window 6 to Window 11: Modals with black background and text -->
+    <div class="overlay" id="window6">
+        <button class="close-button" id="closeWindow6">✖</button>
+        <div class="window-text"></div>
+      <div class="container" id="boxfield"></div>
+    </div>
+
+<div class="overlay" id="window7">
+    <button class="close-button" id="closeWindow7">✖</button>
+    <h1>Contact Me</h1>
+    <button class="circle-button" onclick="openLink()"></button>
+</div>
+
+
+    <div class="overlay" id="window8">
+        <button class="close-button" id="closeWindow8">✖</button>
+        <div class="window-text">8th Window</div>
+    </div>
+
+    <div class="overlay" id="window9">
+        <button class="close-button" id="closeWindow9">✖</button>
+        <div class="window-text">9th Window</div>
+    </div>
+
+    <div class="overlay" id="window10">
+        <button class="close-button" id="closeWindow10">✖</button>
+        <div class="window-text">10th Window</div>
+    </div>
+
+    <div class="overlay" id="window11">
+        <button class="close-button" id="closeWindow11">✖</button>
+        <div class="window-text">11th Window</div>
+    </div>
+
+    <!-- JavaScript Link -->
+    <script src="script.js"></script>
+</body>
+</html>
