@@ -831,7 +831,7 @@ const handleOutgoingChat = () => {
   isResponseGenerating = true;
 
   const html = `<div class="message-content">
-                  <img class="avatar" src="https://wallpapercave.com/wp/wp4310355.jpg" alt="User avatar">
+                  <img class="avatar" src="" alt="User avatar">
                   <p class="text"></p>
                 </div>`;
 
