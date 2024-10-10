@@ -293,6 +293,15 @@ body {
     border-radius: 8px;
 }
 
+#window8 {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
 .controls {
     display: flex;
     flex-wrap: wrap;
