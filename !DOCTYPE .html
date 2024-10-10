@@ -82,10 +82,40 @@
 </div>
 
 
-    <div class="overlay" id="window8">
-        <button class="close-button" id="closeWindow8">✖</button>
-        <div class="window-text">8th Window</div>
+<!-- Window 8: Chatbot Integration -->
+<div class="overlay" id="window8">
+    <button class="close-button" id="closeWindow8">✖</button>
+    <div id="gemini-chatbot">
+        <header class="header">
+            <h1 class="title">Hello, there</h1>
+            <p class="subtitle">How can I help you today?</p>
+            <ul class="suggestion-list">
+                <li class="suggestion">
+                    <h4 class="text">Help me plan a game night with my 5 best friends for under $100.</h4>
+                    <span class="icon material-symbols-rounded">draw</span>
+                </li>
+                <!-- Add other suggestions here -->
+            </ul>
+        </header>
+        <div class="chat-list"></div>
+        <div class="typing-area">
+            <form action="#" class="typing-form">
+                <div class="input-wrapper">
+                    <input type="text" placeholder="Enter a prompt here" class="typing-input" required />
+                    <button id="send-message-button" class="icon material-symbols-rounded">send</button>
+                </div>
+                <div class="action-buttons">
+                    <span id="theme-toggle-button" class="icon material-symbols-rounded">light_mode</span>
+                    <span id="delete-chat-button" class="icon material-symbols-rounded">delete</span>
+                </div>
+            </form>
+            <p class="disclaimer-text">
+                Gemini may display inaccurate info, including about people, so double-check its responses.
+            </p>
+        </div>
     </div>
+</div>
+
 
     <div class="overlay" id="window9">
         <button class="close-button" id="closeWindow9">✖</button>
