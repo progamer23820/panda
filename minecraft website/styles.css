@@ -1,0 +1,701 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    overflow: hidden;
+}
+
+#video-background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 105vw; /* Slightly larger width for zoom-out effect */
+    height: 105vh; /* Slightly larger height for zoom-out effect */
+    transform: translate(-50%, -50%); /* Center the video */
+    object-fit: cover;
+    z-index: -1;
+    transition: transform 0.05s ease-out; /* Smooth transition */
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding-top: 40vh;
+}
+
+.button-container {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    backdrop-filter: blur(15px);
+    padding: 2px;
+    border-radius: 20px;
+    transition: all 0.5s ease;
+    z-index: 2; /* Make sure it stays above the video */
+}
+
+.gif-button {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.gif-button img {
+    width: 90px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.extra-buttons {
+    display: none;
+    flex-direction: column;
+    margin-top: 10px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.5s ease;
+}
+
+.extra-button {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    margin-top: 10px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.5s ease;
+}
+
+.extra-button img {
+    width: 80px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.speech-bubble {
+    opacity: 0; /* Initially hidden */
+    width: 100px; /* Adjust width as needed */
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+    color: black;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    top: 50%; /* Align vertically with the middle of the button */
+    right: 120%; /* Position to the left of the button */
+    transform: translateY(-50%);
+    z-index: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    top: 50%; /* Center the arrow vertically with the bubble */
+    left: 100%; /* Position it at the left edge of the bubble */
+    transform: translateY(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent rgba(255, 255, 255, 0.8);
+}
+
+/* Show speech bubble on button hover */
+.extra-button:hover .speech-bubble {
+    opacity: 1;
+}
+
+/* Overlay Styling for Animation */
+/* Gallery Overlay Styling */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.overlay.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+/* Close button styling */
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: transparent;
+    border: none;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s;
+    z-index: 100;
+}
+
+.close-button:hover {
+    transform: scale(1.2);
+}
+
+
+/* Additional styling for overlay content */
+.window-text {
+    color: #e0e0e0;
+    font-size: 1.5em;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1); /* Optional: add some background for better readability */
+    border-radius: 10px;
+}
+
+
+.container{
+    background-color: #e7e7e7;
+    height: 500px;
+    width: 400px;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.5s ease;
+}
+
+.container:hover{
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+}
+
+.player-img{
+    width: 300px;
+    height: 300px;
+    position: relative;
+    top: -50px;
+    left: 50px;
+}
+
+.player-img img{
+    object-fit: cover;
+    border-radius: 20px;
+    height: 0;
+    width: 0;
+    opacity: 0;
+    box-shadow: 0 5px 30px 5px rgba(0, 0, 0, 0.5);
+}
+
+.player-img:hover img{
+    box-shadow: 0 5px 30px 5px rgba(0, 0, 0, 0.8);
+}
+
+.player-img img.active{
+    width: 100%;
+    height: 100%;
+    transition: all 0.5s;
+    opacity: 1;
+}
+
+h2{
+    font-size: 25px;
+    text-align: center;
+    font-weight: 500;
+    margin: 10px 0 0;
+}
+
+h3{
+    font-size: 18px;
+    text-align: center;
+    font-weight: 500;
+    margin: 10px 0 0;
+}
+
+.player-progress{
+    background-color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 40px 20px 35px;
+    height: 6px;
+    width: 90%;
+}
+
+.progress{
+    background-color: #212121;
+    border-radius: 5px;
+    height: 100%;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+.music-duration{
+    position: relative;
+    top: -25px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.player-controls{
+    position: relative;
+    top: -15px;
+    left: 120px;
+    width: 200px;
+}
+
+.fa-solid{
+    font-size: 30px;
+    color: #666;
+    margin-right: 30px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s ease;
+}
+
+.fa-solid:hover{
+    filter: brightness(40%);
+}
+
+.play-button{
+    font-size: 44px;
+    position: relative;
+    top: 3px;
+}
+
+.volume-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1px;
+}
+
+
+#volume-up {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#volume-down {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+#volume-up:hover {
+    background-color: #f0f0f0;
+}
+
+#volume-percentage {
+    margin: 0 15px;
+    font-size: 16px;
+    color: #333;
+}
+
+
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body 
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #111;
+    perspective: 1000px;
+}
+.scene 
+{
+    position: relative;
+    width: 300px;
+    height: 300px;
+    transform-style: preserve-3d;
+}
+.cube 
+{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+.face 
+{
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    transform-style: preserve-3d;
+    perspective: 500px;
+    border: 1px solid #fff;
+}
+.front 
+{
+    transform: rotateY(0deg) translateZ(150px);
+}
+.back 
+{
+    transform: rotateY(180deg) translateZ(150px);
+}
+.left 
+{
+    transform: rotateY(-90deg) translateZ(150px);
+}
+.right 
+{
+    transform: rotateY(90deg) translateZ(150px);
+}
+.top 
+{
+    transform: rotateX(90deg) translateZ(150px);
+}
+.bottom 
+{
+    transform: rotateX(-90deg) translateZ(150px);
+}
+.grid 
+{
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+}
+.grid span 
+{
+    width: 30px;
+    height: 30px;
+    background: #333d;
+    border: 0.1px solid #fff1;
+    transform-style: preserve-3d;
+    perspective: 500px;
+}
+.grid span.active 
+{
+    background: #fff;
+    z-index: 10000;
+    filter: drop-shadow(0 0 20px #fff);
+}
+
+    :root {
+        --w-size: 200px;
+        --w-margin: calc(var(--w-size) / -2);
+        --b-size: 70%; /* This is % based on w-size. Use any value you want (that makes sense) and any unit that you would like (test it) */
+        --box-wrapper-width: var(--b-size);
+        --box-wrapper-height: var(--b-size);
+        --box-wrapper-margin: calc((100% - var(--box-wrapper-height)) / 2) calc((100% - var(--box-wrapper-width)) / 2);
+    }
+
+    *,
+    *:before,
+    *:after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    .wrapper-custom {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin: var(--w-margin);
+        width: var(--w-size);
+        height: var(--w-size);
+        background-color: transparent;
+        border: none;
+        -webkit-user-select: none;
+
+    }
+
+    .box-wrap-custom {
+        width: var(--box-wrapper-width);
+        height: var(--box-wrapper-height);
+        margin: var(--box-wrapper-margin);
+        position: relative;
+        transform: rotate(-45deg);
+    }
+
+    .box-custom {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: rgba(135, 0, 0, 0.6);
+        background: linear-gradient(to right, #141562, #486FBC, #EAB5A1, #8DD6FF, #4973C9, #D07CA7, #F4915E, #F5919E, #B46F89, #141562, #486FBC);
+        background-position: 0% 50%;
+        background-size: 1000% 1000%;
+        visibility: hidden;
+    }
+
+    .box-custom.one {
+        animation: moveGradient 15s infinite, oneMove 3.5s infinite;
+    }
+
+    .box-custom.two {
+        animation: moveGradient 15s infinite, twoMove 3.5s 0.15s infinite;
+    }
+
+    .box-custom.three {
+        animation: moveGradient 15s infinite, threeMove 3.5s 0.3s infinite;
+    }
+
+    .box-custom.four {
+        animation: moveGradient 15s infinite, fourMove 3.5s 0.575s infinite;
+    }
+
+    .box-custom.five {
+        animation: moveGradient 15s infinite, fiveMove 3.5s 0.725s infinite;
+    }
+
+    .box-custom.six {
+        animation: moveGradient 15s infinite, sixMove 3.5s 0.875s infinite;
+    }
+
+    @keyframes moveGradient {
+        to {
+            background-position: 100% 50%;
+        }
+    }
+
+    @keyframes oneMove {
+        0% {
+            visibility: visible;
+            clip-path: inset(0% 35% 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        14.2857% {
+            clip-path: inset(0% 35% 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        28.5714% {
+            clip-path: inset(35% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        42.8571% {
+            clip-path: inset(35% 70% 35% 0 round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        57.1428% {
+            clip-path: inset(35% 70% 35% 0 round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        71.4285% {
+            clip-path: inset(0% 70% 70% 0 round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        85.7142% {
+            clip-path: inset(0% 70% 70% 0 round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        100% {
+            clip-path: inset(0% 35% 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+    }
+
+    @keyframes twoMove {
+        0% {
+            visibility: visible;
+            clip-path: inset(0% 70% 70% 0 round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        14.2857% {
+            clip-path: inset(0% 70% 70% 0 round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        28.5714% {
+            clip-path: inset(0% 35% 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        42.8571% {
+            clip-path: inset(0% 35% 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        57.1428% {
+            clip-path: inset(35% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        71.4285% {
+            clip-path: inset(35% 70% 35% 0 round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        85.7142% {
+            clip-path: inset(35% 70% 35% 0 round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        100% {
+            clip-path: inset(0% 70% 70% 0 round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+    }
+
+    @keyframes threeMove {
+        0% {
+            visibility: visible;
+            clip-path: inset(35% 70% 35% 0 round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        14.2857% {
+            clip-path: inset(35% 70% 35% 0 round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        28.5714% {
+            clip-path: inset(0% 70% 70% 0 round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        42.8571% {
+            clip-path: inset(0% 70% 70% 0 round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        57.1428% {
+            clip-path: inset(0% 35% 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        71.4285% {
+            clip-path: inset(0% 35% 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        85.7142% {
+            clip-path: inset(35% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        100% {
+            clip-path: inset(35% 70% 35% 0 round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+    }
+
+    @keyframes fourMove {
+        0% {
+            visibility: visible;
+            clip-path: inset(35% 0% 35% 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        14.2857% {
+            clip-path: inset(35% 0% 35% 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        28.5714% {
+            clip-path: inset(35% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        42.8571% {
+            clip-path: inset(70% 35% 0% 35% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        57.1428% {
+            clip-path: inset(70% 35% 0% 35% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        71.4285% {
+            clip-path: inset(70% 0 0 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        85.7142% {
+            clip-path: inset(70% 0 0 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        100% {
+            clip-path: inset(35% 0% 35% 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+    }
+
+    @keyframes fiveMove {
+        0% {
+            visibility: visible;
+            clip-path: inset(70% 0 0 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        14.2857% {
+            clip-path: inset(70% 0 0 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        28.5714% {
+            clip-path: inset(35% 0% 35% 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        42.8571% {
+            clip-path: inset(35% 0% 35% 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        57.1428% {
+            clip-path: inset(35% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        71.4285% {
+            clip-path: inset(70% 35% 0% 35% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        85.7142% {
+            clip-path: inset(70% 35% 0% 35% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        100% {
+            clip-path: inset(70% 0 0 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+    }
+
+    @keyframes sixMove {
+        0% {
+            visibility: visible;
+            clip-path: inset(70% 35% 0% 35% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        14.2857% {
+            clip-path: inset(70% 35% 0% 35% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        28.5714% {
+            clip-path: inset(70% 0 0 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        42.8571% {
+            clip-path: inset(70% 0 0 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        57.1428% {
+            clip-path: inset(35% 0% 35% 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        71.4285% {
+            clip-path: inset(35% 0% 35% 70% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        85.7142% {
+            clip-path: inset(35% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        100% {
+            clip-path: inset(70% 35% 0% 35% round 5%);
+            animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+    }
+
+
