@@ -644,6 +644,12 @@ closeWindow8.addEventListener('click', () => {
 
 // Window 9 open/close
 const openWindow9Btn = document.getElementById('openWindow9');
+
+openWindow9Btn.addEventListener('click', () => {
+    // Redirect to the Minecraft project page
+    window.location.href = "minecraft website/index.html";
+});
+
 const closeWindow9 = document.getElementById('closeWindow9');
 
 openWindow9Btn.addEventListener('click', () => {
