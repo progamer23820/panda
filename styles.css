@@ -362,6 +362,10 @@ body {
     border-radius: 8px;
 }
 
+#window9 .window-text {
+    color: white;
+}
+
 .controls {
     display: flex;
     flex-wrap: wrap;
