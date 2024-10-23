@@ -67,20 +67,80 @@ body {
     display: none;
 }
 
-/* 3D glass button style */
+/* Container to handle scaling and moving up for each button */
+.new-button-wrapper {
+    display: inline-block;
+    transition: transform 0.6s ease, top 0.6s ease;
+    margin: 7px; /* Adjust spacing between buttons */
+}
+
+/* Hover state for the wrapper: scale up and move up */
+.new-button-wrapper:hover {
+    transform: scale(1.1) translateY(-12px);
+}
+
+/* Button styling */
 .new-button {
+    position: relative;
+    display: inline-block;
     width: 230px;
     height: 150px;
-    border-radius: 35px;
-    border: 5px solid #333;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.5);
+    font-size: 16px;
+    color: white;
+    border: none;
     cursor: pointer;
     background-size: cover;
     background-position: center;
-    transition: transform 0.1s ease-in-out;
+    border-radius: 35px;
+    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.5);
+    user-select: none;
+    overflow: hidden;
+    transform: none;
+    transition: none;
 }
+
+/* Apply wiggle animation on hover */
+.new-button-wrapper:hover .new-button {
+    animation: wiggle 0.8s ease forwards; /* Keep the end state of the animation */
+}
+
+/* Wiggle animation keyframes with leaning effect */
+@keyframes wiggle {
+    0% {
+        transform: rotate(0deg) translateX(0);
+        border-radius: 35px;
+    }
+    15% {
+        transform: rotate(2deg) translateX(2px);
+        border-radius: 35px 45px 35px 35px; /* Leaning right */
+    }
+    30% {
+        transform: rotate(-2deg) translateX(-2px);
+        border-radius: 45px 35px 35px 35px; /* Leaning left */
+    }
+    45% {
+        transform: rotate(1.5deg) translateX(1.5px);
+        border-radius: 35px 40px 35px 35px; /* Slightly leaning right */
+    }
+    60% {
+        transform: rotate(-1.5deg) translateX(-1.5px);
+        border-radius: 40px 35px 35px 35px; /* Slightly leaning left */
+    }
+    75% {
+        transform: rotate(1deg) translateX(1px);
+        border-radius: 35px 37px 35px 35px; /* Minimal lean right */
+    }
+    100% {
+        transform: rotate(0deg) translateX(0);
+        border-radius: 35px;
+    }
+}
+
+/* Additional hover effects to avoid conflicts */
+.new-button:hover {
+    box-shadow: 0px 40px 40px rgba(0, 0, 0, 0.6);
+}
+
 
 /* Specific styles for the buttons with background images */
 #openWindow3 {
