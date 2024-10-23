@@ -643,11 +643,19 @@ closeWindow8.addEventListener('click', () => {
 });
 
 // Window 9 open/close
+// Reference to Window 9 button and its audio element
 const openWindow9Btn = document.getElementById('openWindow9');
+const minecraftIntroAudio = document.getElementById('minecraftIntro');
 
 openWindow9Btn.addEventListener('click', () => {
-    // Redirect to the Minecraft project page
-    window.location.href = "minecraft website/index.html";
+    // Redirect to the Minecraft project page in a new tab
+    window.open("minecraft website/index.html", "_blank");
+    
+    // Play the Minecraft intro audio
+    minecraftIntroAudio.currentTime = 0; // Reset the audio to the start
+    minecraftIntroAudio.play().catch((error) => {
+        console.error("Minecraft intro playback failed. User interaction required.", error);
+    });
 });
 
 const closeWindow9 = document.getElementById('closeWindow9');
