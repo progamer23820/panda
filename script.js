@@ -647,6 +647,7 @@ closeWindow8.addEventListener('click', () => {
 const openWindow9Btn = document.getElementById('openWindow9');
 const minecraftIntroAudio = document.getElementById('minecraftIntro');
 
+
 openWindow9Btn.addEventListener('click', () => {
     // Redirect to the Minecraft project page in a new tab
     window.open("minecraft website/index.html", "_blank");
@@ -888,4 +889,51 @@ typingForm.addEventListener("submit", (e) => {
   handleOutgoingChat();
 });
 
-loadDataFromLocalstorage();
+// ... your existing JavaScript code ...
+
+window.addEventListener('load', function() {
+  var scene = document.querySelector('.scene');
+  scene.style.transition = 'opacity 1s ease-out';
+  scene.style.opacity = '1';
+
+  // Trigger a reflow to ensure the transition works
+  void scene.offsetWidth;
+
+  // Start the fade-out effect
+  scene.style.opacity = '0';
+
+  // Optionally, remove the element from the DOM after fading out
+  scene.addEventListener('transitionend', function() {
+    scene.style.display = 'none';
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const backgroundMusic = document.getElementById('backgroundMusic');
+  backgroundMusic.volume = 0.17; // Set volume to 17%
+});
+
+
+// Load the sound disk wii,hovering over
+const diskInsertedSound = new Audio('sounds/Disk Inserted.mp3'); // Adjust path if necessary
+diskInsertedSound.volume = 0.3; // Set volume to 30% (adjust this value as needed)
+
+// Select all the buttons in Window 2
+const window2Buttons = document.querySelectorAll('#window2 .new-button');
+
+// Function to play sound on hover
+function playHoverSound() {
+    diskInsertedSound.currentTime = 0; // Reset the sound to the beginning
+    diskInsertedSound.play().catch((error) => {
+        console.error("Playback failed. User interaction may be required.", error);
+    });
+}
+
+// Attach hover event listeners to all buttons
+window2Buttons.forEach(button => {
+    button.addEventListener('mouseover', playHoverSound);
+});
+
+
+
+
