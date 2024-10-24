@@ -915,7 +915,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // Load the sound disk wii,hovering over
-const diskInsertedSound = new Audio('sounds/Disk Inserted.mp3'); // Adjust path if necessary
+const diskInsertedSound = new Audio('sounds/Disk%20Inserted.mp3'); // Adjust path if necessary
 diskInsertedSound.volume = 0.3; // Set volume to 30% (adjust this value as needed)
 
 // Select all the buttons in Window 2
