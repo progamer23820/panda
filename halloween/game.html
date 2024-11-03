@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+body {
+    margin: 0;
+    overflow: hidden;
+    background: transparent;
+    font-family: Arial, sans-serif;
+}
+
+        #gameCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #overlayCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+        }
+        .hud {
+            position: absolute;
+            color: white;
+            padding: 10px;
+            font-size: 24px;
+            z-index: 2;
+        }
+        #timer {
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        #score {
+            top: 10px;
+            right: 10px;
+        }
+        #round {
+            top: 10px;
+            left: 10px;
+        }
+        #eraseBar {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 200px;
+            background: #333;
+            border: 2px solid white;
+            z-index: 3;
+        }
+        #eraseProgress {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: white;
+            transition: height 0.1s;
+        }
+        #endGameScreen {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            z-index: 3;
+        }
+        .button {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .button:hover {
+            background: #45a049;
+        }
+        .ghost {
+            position: absolute;
+            z-index: 1;
+            transform-origin: center;
+            width: 90px;
+            pointer-events: none;
+        }
+
+        .ghost__head {
+            position: relative;
+            width: 100%;
+            height: 100px;
+        }
+
+        .ghost__eyes,
+        .ghost__mouth {
+            position: absolute;
+            z-index: 1;
+            width: 15px;
+            height: 15px;
+            top: 34px;
+            left: 50%;
+            transform: translate(-50%);
+            border-radius: 50px;
+            background: #2a0a4a;
+            margin-left: -20px;
+            transform-origin: center;
+        }
+
+        .ghost__eyes {
+            box-shadow: 40px 0 0 #2a0a4a;
+        }
+
+        .ghost__mouth {
+            margin: 0;
+            top: 60px;
+            transform: scale(0);
+            border-radius: 20px 20px 12px 12px;
+            width: 20px;
+            transform-origin: center bottom;
+            overflow: hidden;
+        }
+
+        .ghost__tail {
+            position: absolute;
+            z-index: -1;
+            top: 82px;
+            height: 55px;
+            width: 100%;
+            filter: url(#goo);
+        }
+
+        .ghost__tail:before {
+            content: '';
+            background: #fff;
+            position: absolute;
+            bottom: 35px;
+            left: 0;
+            height: 100px;
+            width: 100%;
+            border-radius: 40px 40px 5px 5px;
+        }
+
+        .ghost__rip {
+            width: 15px;
+            height: 28px;
+            background: #fff;
+            position: absolute;
+            top: 15px;
+            left: 0;
+            box-shadow: -62px 0 0 #fff, -31px 0 0 #fff, 31px 0 0 #fff, 62px 0 0 #fff, 93px 0 0 #fff;
+            border-radius: 50%;
+            animation: ghost-rips 1.2s linear infinite;
+        }
+
+        @keyframes ghost-rips {
+            0% { left: 0; top: 12px; }
+            50% { left: 31px; top: 20px; }
+            100% { left: 62px; top: 12px; }
+        }
+
+        .score-popup {
+            position: fixed;
+            background: linear-gradient(45deg, #4a3aff, #9747FF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 48px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 4;
+            opacity: 0;
+            transform: translateY(0);
+            animation: scorePopup 1s ease-out forwards;
+        }
+
+        @keyframes scorePopup {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0.8);
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(0) scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50px) scale(1);
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <canvas id="overlayCanvas"></canvas>
+    <div id="timer" class="hud">5</div>
+    <div id="score" class="hud">Score: 0</div>
+    <div id="round" class="hud">Round: 1/3</div>
+    <div id="eraseBar">
+        <div id="eraseProgress"></div>
+    </div>
+    <div id="endGameScreen">
+        <h2>Game Over!</h2>
+        <p>Final Score: <span id="finalScore">0</span></p>
+        <button class="button" onclick="restartGame()">Play Again</button>
+        <button class="button" onclick="endGame()">End Game</button>
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: none;">
+        <defs>
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="ghost-blur" />
+                <feColorMatrix in="ghost-blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 16 -7" result="ghost-gooey" />
+                <feComposite in="SourceGraphic" in2="ghost-gooey" operator="atop" />
+            </filter>
+        </defs>
+    </svg>
+
+    <script>
+        const gameCanvas = document.getElementById('gameCanvas');
+        const ctx = gameCanvas.getContext('2d');
+        const overlayCanvas = document.getElementById('overlayCanvas');
+        const overlayCtx = overlayCanvas.getContext('2d');
+        const timerElement = document.getElementById('timer');
+        const scoreElement = document.getElementById('score');
+        const roundElement = document.getElementById('round');
+        const eraseProgress = document.getElementById('eraseProgress');
+        const endGameScreen = document.getElementById('endGameScreen');
+
+        let currentRound = 1;
+        let gamePhase = 'moving';
+        let gameLoop;
+        let timer;
+        
+        // Set canvas size
+        function resizeCanvas() {
+            gameCanvas.width = window.innerWidth;
+            gameCanvas.height = window.innerHeight;
+            overlayCanvas.width = window.innerWidth;
+            overlayCanvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Ghost class
+        class Ghost {
+            constructor() {
+                // Create ghost DOM element
+                this.element = document.createElement('div');
+                this.element.className = 'ghost';
+                this.element.innerHTML = `
+                    <div class="ghost__head">
+                        <div class="ghost__eyes"></div>
+                        <div class="ghost__mouth"></div>
+                    </div>
+                    <div class="ghost__tail">
+                        <div class="ghost__rip"></div>
+                    </div>
+                `;
+                document.body.appendChild(this.element);
+
+                // Position and movement
+                this.size = 90; // Width of the ghost
+                this.x = Math.random() * (window.innerWidth - this.size);
+                this.y = Math.random() * (window.innerHeight - this.size);
+                this.dx = (Math.random() - 0.5) * 5;
+                this.dy = (Math.random() - 0.5) * 5;
+                this.frozen = false;
+                this.visible = 0;
+                this.counted = false;
+
+                this.updatePosition();
+            }
+
+            updatePosition() {
+                this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
+            }
+
+            update() {
+                if (!this.frozen) {
+                    this.x += this.dx;
+                    this.y += this.dy;
+
+                    if (this.x <= 0 || this.x >= window.innerWidth - this.size) this.dx *= -1;
+                    if (this.y <= 0 || this.y >= window.innerHeight - this.size) this.dy *= -1;
+
+                    this.updatePosition();
+                }
+            }
+
+            draw() {
+                // No need for canvas drawing anymore
+            }
+        }
+
+        // Game state
+        let ghosts = [];
+        let score = 0;
+        let timeLeft = 5;
+        let eraseAmount = 100;
+        const maxEraseRadius = 20; // ~1cm radius
+
+        function initRound() {
+            // Clear any existing overlay
+            overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+            
+            // Remove existing ghosts
+            document.querySelectorAll('.ghost').forEach(ghost => ghost.remove());
+            
+            // Reset game state
+            ghosts = [new Ghost(), new Ghost(), new Ghost()];
+            timeLeft = 5;
+            eraseAmount = 100;
+            gamePhase = 'moving';
+            eraseProgress.style.height = '100%';
+            timerElement.textContent = timeLeft;
+            roundElement.textContent = `Round: ${currentRound}/3`;
+
+            // Start game loop
+            if (gameLoop) cancelAnimationFrame(gameLoop);
+            updateGame();
+
+            // Start timer
+            if (timer) clearInterval(timer);
+            timer = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+
+                if (timeLeft === 0) {
+                    clearInterval(timer);
+                    
+                    // Add black overlay and freeze ghosts at the same time
+                    setTimeout(() => {
+                        gamePhase = 'frozen';
+                        ghosts.forEach(ghost => ghost.frozen = true);
+                        overlayCtx.fillStyle = 'black';
+                        overlayCtx.fillRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+                        gamePhase = 'overlay';
+                    }, 2000);
+                }
+            }, 1000);
+        }
+
+        function updateGame() {
+            ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+            ghosts.forEach(ghost => {
+                ghost.update();
+                ghost.draw();
+            });
+            gameLoop = requestAnimationFrame(updateGame);
+        }
+
+        function checkRoundEnd() {
+            if (eraseAmount <= 0) {
+                if (currentRound < 3) {
+                    currentRound++;
+                    // Clear the black overlay
+                    overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+                    // Remove existing ghosts before starting new round
+                    document.querySelectorAll('.ghost').forEach(ghost => ghost.remove());
+                    setTimeout(initRound, 1000);
+                } else {
+                    endGameScreen.style.display = 'block';
+                    document.getElementById('finalScore').textContent = score;
+                    cancelAnimationFrame(gameLoop);
+                    if (timer) clearInterval(timer);
+                }
+            }
+        }
+
+        function restartGame() {
+            score = 0;
+            currentRound = 1;
+            scoreElement.textContent = `Score: ${score}`;
+            endGameScreen.style.display = 'none';
+            initRound();
+        }
+
+        function endGame() {
+            endGameScreen.style.display = 'none';
+            ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+            overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+            cancelAnimationFrame(gameLoop);
+            if (timer) clearInterval(timer);
+            
+            // Display thank you message
+            ctx.fillStyle = 'white';
+            ctx.font = '48px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Thanks for playing!', gameCanvas.width/2, gameCanvas.height/2);
+        }
+
+        // Mouse interaction
+        let isErasing = false;
+        overlayCanvas.addEventListener('mousedown', (e) => {
+            if (gamePhase === 'overlay' && eraseAmount > 0) {
+                isErasing = true;
+                erase(e);
+            }
+        });
+
+        overlayCanvas.addEventListener('mousemove', (e) => {
+            if (isErasing && eraseAmount > 0) {
+                erase(e);
+            }
+        });
+
+        overlayCanvas.addEventListener('mouseup', () => {
+            isErasing = false;
+        });
+
+        function erase(e) {
+            if (eraseAmount <= 0) return;
+
+            const rect = overlayCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            overlayCtx.globalCompositeOperation = 'destination-out';
+            overlayCtx.beginPath();
+            overlayCtx.arc(x, y, maxEraseRadius, 0, Math.PI * 2);
+            overlayCtx.fill();
+            overlayCtx.globalCompositeOperation = 'source-over';
+
+            // Decrease erase amount
+            eraseAmount = Math.max(0, eraseAmount - 1);
+            eraseProgress.style.height = `${eraseAmount}%`;
+
+            // Check ghost visibility
+            checkGhostVisibility(x, y);
+            
+            // Check if round should end
+            checkRoundEnd();
+        }
+
+        function checkGhostVisibility(eraseX, eraseY) {
+            ghosts.forEach(ghost => {
+                if (!ghost.counted && ghost.frozen) {
+                    const ghostCenterX = ghost.x + ghost.size/2;
+                    const ghostCenterY = ghost.y + ghost.size/2;
+                    const distance = Math.sqrt(
+                        Math.pow(eraseX - ghostCenterX, 2) + 
+                        Math.pow(eraseY - ghostCenterY, 2)
+                    );
+
+                    if (distance < maxEraseRadius + ghost.size/2) {
+                        ghost.visible += 5;
+                        if (ghost.visible >= 60 && !ghost.counted) {
+                            score++;
+                            scoreElement.textContent = `Score: ${score}`;
+                            ghost.counted = true;
+                            createScorePopup(eraseX, eraseY);
+                            
+                            // Check if all ghosts have been found
+                            const allGhostsFound = ghosts.every(g => g.counted);
+                            if (allGhostsFound) {
+                                if (currentRound < 3) {
+                                    currentRound++;
+                                    // Clear the black overlay
+                                    overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+                                    // Remove existing ghosts before starting new round
+                                    document.querySelectorAll('.ghost').forEach(ghost => ghost.remove());
+                                    setTimeout(initRound, 1000);
+                                } else {
+                                    endGameScreen.style.display = 'block';
+                                    document.getElementById('finalScore').textContent = score;
+                                    cancelAnimationFrame(gameLoop);
+                                    if (timer) clearInterval(timer);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createScorePopup(x, y) {
+            const popup = document.createElement('div');
+            popup.className = 'score-popup';
+            popup.textContent = '+1';
+            popup.style.left = `${x}px`;
+            popup.style.top = `${y}px`;
+            document.body.appendChild(popup);
+
+            // Remove the element after animation completes
+            popup.addEventListener('animationend', () => {
+                popup.remove();
+            });
+        }
+
+        // Start the first round
+        initRound();
+    </script>
+</body>
+</html>
