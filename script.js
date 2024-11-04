@@ -681,6 +681,10 @@ const openWindow10Btn = document.getElementById('openWindow10');
 const closeWindow10 = document.getElementById('closeWindow10');
 
 openWindow10Btn.addEventListener('click', () => {
+    // Redirect to the Halloween website page in a new tab
+    window.open("halloween/index.html", "_blank");
+
+    // Additional actions for showing the window if needed
     stopAllAnimations();
     window10.classList.add('show');
     window10.style.pointerEvents = 'auto';
@@ -933,7 +937,6 @@ function playHoverSound() {
 window2Buttons.forEach(button => {
     button.addEventListener('mouseover', playHoverSound);
 });
-
 
 
 
