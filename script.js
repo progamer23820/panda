@@ -939,4 +939,29 @@ window2Buttons.forEach(button => {
 });
 
 
+const closeButtonHoverSound = new Audio("sounds/hover1.mp3");
+const clickSound = new Audio("sounds/click1.mp3");
 
+closeButtonHoverSound.volume = 0.5;
+clickSound.volume = 0.5;
+
+const closeButtons = document.querySelectorAll(".close-button");
+
+function playCloseButtonHoverSound() {
+  closeButtonHoverSound.currentTime = 0;
+  closeButtonHoverSound.play().catch(error => {
+    console.error("Playback failed. User interaction may be required.", error);
+  });
+}
+
+function playClickSound() {
+  clickSound.currentTime = 0;
+  clickSound.play().catch(error => {
+    console.error("Playback failed. User interaction may be required.", error);
+  });
+}
+
+closeButtons.forEach(button => {
+  button.addEventListener("mouseover", playCloseButtonHoverSound);
+  button.addEventListener("click", playClickSound);
+});
